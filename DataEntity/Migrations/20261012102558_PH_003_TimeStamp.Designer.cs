@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataEntity.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    [Migration("20261012094349_PH_003_TimeStamp")]
+    [Migration("20261012102558_PH_003_TimeStamp")]
     partial class PH_003_TimeStamp
     {
         /// <inheritdoc />

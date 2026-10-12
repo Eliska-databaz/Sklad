@@ -5,10 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PropertyChanged;
 
 namespace DataEntity
 {
     [Table("Materials")]
+    [AddINotifyPropertyChangedInterface]
     public class Material : BaseModel
     {
         [Key]
@@ -32,5 +34,9 @@ namespace DataEntity
         [ForeignKey(nameof(UnitOfMeasureId))]
         [Required(ErrorMessage = "Měrná jednotka je povinné pole.")]
         public virtual UnitOfMeasure UnitOfMeasure { get; set; } = new UnitOfMeasure(); // navigační vlastnost pro jednotku měření
+
+
+
+
     }
 }
