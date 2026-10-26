@@ -6,5 +6,7 @@
         xmlns:local="clr-namespace:Sklad"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Image HorizontalAlignment="Left" Height="100" Margin="436,269,0,0" VerticalAlignment="Top" Width="100"/>
+    <Button Click="Button_Click" Background="{x:Null}" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" Width="800">
+        <CheckBox Content="CheckBox" RenderTransformOrigin="0.5,0.5" Height="134" Width="302"/>
+    </Button>
 </Window>
