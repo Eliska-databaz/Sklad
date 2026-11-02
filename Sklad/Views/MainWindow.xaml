@@ -54,8 +54,8 @@
 
                     <StackPanel VerticalAlignment="Center">
 
-                        <Button Margin="15" Padding="10">
-                            <StackPanel>
+                    <Button Margin="15" Padding="10" Command="{Binding OpenMaterialOverviewCommand}">
+                        <StackPanel>
                                 <Image Source="/Images/MainMenu/prehledmat.png" Width="48"/>
                                 <TextBlock Text="Přehled materiálu" FontSize="14" HorizontalAlignment="Center"/>
                             </StackPanel>
