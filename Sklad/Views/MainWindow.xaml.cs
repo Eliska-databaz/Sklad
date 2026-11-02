@@ -24,7 +24,9 @@ namespace Sklad.Views
         {
             InitializeComponent();
 
-            DataContext = new MainWindowViewModel();
+            DataContext = new MainWindowViewModel(); 
+            
+            Globals.Initialize();
 
         }
     }
