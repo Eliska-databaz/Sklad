@@ -28,6 +28,8 @@ namespace Sklad.Views
             
             Globals.Initialize();
 
+            Globals.Context.Seed();
+
         }
     }
 }

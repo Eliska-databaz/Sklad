@@ -25,5 +25,10 @@ namespace Sklad.Views
             InitializeComponent();
             DataContext = new MaterialOverviewViewModel();
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
