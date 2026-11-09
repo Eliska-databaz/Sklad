@@ -1,11 +1,12 @@
-﻿<Window x:Class="Sklad.Views.MaterialOverviewWindow"
+﻿<mah:MetroWindow x:Class="Sklad.Views.MaterialOverviewWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Sklad.Views"
         mc:Ignorable="d"
-        Title="Přehled materiálu" Height="450" Width="800">
+        Title="Přehled materiálu" Height="550" Width="1000">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -13,18 +14,88 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="5">
-            <TextBlock Text="{Binding SelectedMaterial.Name}"/>
-            <TextBlock Text="{Binding SelectedMaterial.SafetyStock}"/>
-            <TextBlock Text="{Binding SelectedMaterial.UnitOfMeasure.Description}"/>
-        </StackPanel>
+        <!-- Tento kód nahrazuje původní levý StackPanel ve sloupci 0 -->
+        <Grid Grid.Column="0" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Nástrojová lišta -->
+                <RowDefinition Height="*"/>
+                <!-- Formulář -->
+            </Grid.RowDefinitions>
+
+            <!-- Tlačítka pro manipulaci se záznamem -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                <Button Margin="0,0,5,0" Width="30" Height="30" ToolTip="Přidat">
+                    <Image Source="/Images/Icons/Add.png"/>
+                </Button>
+                <Button Margin="0,0,5,0" Width="30" Height="30" ToolTip="Smazat">
+                    <Image Source="/Images/Icons/Delete.png"/>
+                </Button>
+                <Button Width="30" Height="30" ToolTip="Editovat">
+                    <Image Source="/Images/Icons/Edit.png"/>
+                </Button>
+            </StackPanel>
+
+            <!-- Samotný editační formulář (obyčejný GroupBox bez vlastního stylu) -->
+            <GroupBox Grid.Row="1" Header="PROHLÍŽENÍ">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Číslo:" Margin="5" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedMaterial.MaterialId, Mode=OneWay}" IsReadOnly="True" Margin="5"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Měrná jednotka:" Margin="5" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5"
+                              ItemsSource="{Binding UnitsOfMeasureCol}"
+                              SelectedItem="{Binding SelectedMaterial.UnitOfMeasure}"
+                              DisplayMemberPath="Description" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Název materiálu:" Margin="5" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedMaterial.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="5"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Max. množství v paletě:" Margin="5" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedMaterial.PalletCapacity, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="5"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Pojistné množství:" Margin="5" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedMaterial.SafetyStock, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="5"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Komentář:" Margin="5" VerticalAlignment="Top"/>
+                    <!-- Entita Material aktuálně nemá vlastnost Comment, pole je zde proto ponecháno bez Bindingu, aby vizuálně odpovídalo obrázku. -->
+                    <TextBox Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="True" Margin="5" VerticalScrollBarVisibility="Auto"/>
+
+                    <!-- Tlačítka uložení a storna -->
+                    <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,15,5,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="OK" Margin="0,0,5,0" Padding="5"/>
+                        <Button Grid.Column="1" Content="STORNO" Margin="5,0,0,0" Padding="5"/>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+        </Grid>
 
         <GroupBox Header="Materiály" Grid.Column="1">
+
             <DataGrid ItemsSource="{Binding MaterialsCol}" IsReadOnly="True"
                       SelectionMode="Single"
                       HeadersVisibility="Column"
                       AutoGenerateColumns="False"
-                      SelectedItem="{Binding SelectedMaterial}">
+                      SelectedItem="{Binding SelectedMaterial}"
+                      >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding MaterialId}"/>
                     <DataGridTextColumn Header="Název" Width="*" Binding="{Binding Name}"/>
@@ -32,9 +103,10 @@
                     <DataGridTextColumn Header="MJ" Binding="{Binding UnitOfMeasure.Description}"/>
                 </DataGrid.Columns>
             </DataGrid>
-            
+
         </GroupBox>
 
+        <!-- Nahraď původní GroupBox "Palety" ve sloupci 2 tímto kódem: -->
         <GroupBox Header="Palety" Grid.Column="2">
             <Grid>
                 <Grid.RowDefinitions>
@@ -42,10 +114,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <DataGrid Grid.Row="0" ItemsSource="{Binding SelectedMaterial.Pallets}" IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid Grid.Row="0" ItemsSource="{Binding SelectedMaterial.Pallets}" 
+                          IsReadOnly="True" AutoGenerateColumns="False" Margin="0,0,0,10">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding PalletId}"/>
-                        <DataGridTextColumn Header="Adresa" Width="*" Binding="{Binding StorageLocation}"/>
+                        <DataGridTextColumn Header="Místo" Width="*" Binding="{Binding StorageLocation}"/>
                         <DataGridTextColumn Header="Množství" Binding="{Binding Quantity}"/>
                     </DataGrid.Columns>
                 </DataGrid>
@@ -72,8 +145,8 @@
                     <TextBlock Text="{Binding SelectedMaterial.TotalQuantity}" FontSize="14" FontWeight="Bold"/>
                     <TextBlock Text="{Binding SelectedMaterial.UnitOfMeasure.Description, StringFormat=' {0}'}" FontSize="14" FontWeight="Bold"/>
                 </StackPanel>
-
             </Grid>
         </GroupBox>
+
     </Grid>
-</Window>
+</mah:MetroWindow>

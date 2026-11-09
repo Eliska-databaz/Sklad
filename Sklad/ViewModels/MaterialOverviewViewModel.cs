@@ -28,7 +28,20 @@ namespace Sklad.ViewModels
 
         public Material SelectedMaterial { get; set; } = new Material();
 
+        private ObservableCollection<UnitOfMeasure> unitsOfMeasureCol;
+        public ObservableCollection<UnitOfMeasure> UnitsOfMeasureCol
+        {
+            get
+            {
+                if (unitsOfMeasureCol == null)
+                {
+                    unitsOfMeasureCol = new ObservableCollection<UnitOfMeasure>(Globals.Context.UnitsOfMeasure);
+                }
+                return unitsOfMeasureCol;
+            }
+        }
+
     }
 
-    
+
 }
